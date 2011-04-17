@@ -1,0 +1,20 @@
+	elseif( $_POST['mode'] == "deleteFile" and $_POST['id'] ) {
+
+		$id = $core->clean( $_POST['id'] );
+
+		$query	= $db->query( "SELECT * FROM _pages WHERE id = '{$id}'" );
+		$array	= $db->assoc( $query );
+		$num	= $db->num( $query );
+		
+		$file	= "/home/jiajiann/public_html/extranet/_res/_pages/" . $array['page'];
+		$relativePath = "_res/_pages/" . $array['page'];
+		
+		if( $num != 0 or ( $user->hasGroup( '4' ) or $user->hasGroup( '5' ) ) ) {
+
+			$page->deletePage( $file );
+			$db->query( "DELETE FROM _pages WHERE id = '{$id}'" );
+			$db->query( "DELETE FROM menu WHERE resource = '{$relativePath}'" );
+			
+		}
+
+	}
